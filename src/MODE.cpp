@@ -11,6 +11,10 @@ void    Server::_mode(int fd, std::string buffer) {
         _sendError(fd, ERR_NEEDMOREPARAMS, command + " :Not enough parameters");
         return;
     }
+    if (channelName == this->_clients[fd].getNickname()) {
+        return;
+    }
+    if (!this->_clients[fd].getRegistred()){_sendError(fd, ERR_NOTREGISTERED, " :You have not registered");return;}
     if (!_doesChannelExist(channelName)) {
         _sendError(fd, ERR_NOSUCHHANNEL, channelName + " :No such channel");
         return;

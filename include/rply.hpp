@@ -10,7 +10,6 @@
 #define RPL_CHANNELMODEIS       "324"
 #define RPL_TOPIC               "332"
 #define RPL_INVITING            "341"
-#define RPL_YOUREOPER           "381"
 
 
 //ERROR
@@ -29,5 +28,7 @@
 #define ERR_ALREADYREGISTRED    "462"
 #define ERR_NOTONCHANNEL        "442"
 #define ERR_USERONCHANNEL       "443"
+#define ERR_NOTREGISTERED       "451"
+#define ERR_UNKNOWNCOMMAND      "421"
 
 #endif

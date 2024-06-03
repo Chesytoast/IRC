@@ -157,41 +157,52 @@ void    Server::_processCommand(int fd, std::string cmdBuffer) {
         _quit(fd, cmdBuffer);
         return;
     }
-    if (this->_clients[fd].getRegistred()){
-        if (command == "JOIN") {
-            _join(fd, cmdBuffer);
-            return;
-        }
-        else if (command == "PRIVMSG") {
-            _privmsg(fd, cmdBuffer);
-            return;
-        }
-        else if (command == "MODE") {
-            _mode(fd, cmdBuffer);
-            return;
-        }
-        //part
-        //topic
-        //kick
-        //invite
-        else if (command == "PART") {
-            _part(fd, cmdBuffer);
-            return;
-        }
-        else if (command == "TOPIC") {
-            _topic(fd, cmdBuffer);
-            return;
-        }
-        else if (command == "INVITE") {
-            _invite(fd, cmdBuffer);
-            return;
-        }
-        else if (command == "KICK") {
-            _kick(fd, cmdBuffer);
-            return;
-        }
+   //here
+    else if (command == "JOIN") {
+        if (!this->_clients[fd].getRegistred()){_sendError(fd, ERR_NOTREGISTERED, " :You have not registered");return;}
+        _join(fd, cmdBuffer);
+        return;
+    }
+    else if (command == "PRIVMSG") {
+        if (!this->_clients[fd].getRegistred()){_sendError(fd, ERR_NOTREGISTERED, " :You have not registered");return;}
+        _privmsg(fd, cmdBuffer);
+        return;
+    }
+    else if (command == "MODE") {
+        _mode(fd, cmdBuffer);
+        return;
+    }
+    //part
+    //topic
+    //kick
+    //invite
+    else if (command == "PART") {
+        if (!this->_clients[fd].getRegistred()){_sendError(fd, ERR_NOTREGISTERED, " :You have not registered");return;}
+        _part(fd, cmdBuffer);
+        return;
+    }
+    else if (command == "TOPIC") {
+        if (!this->_clients[fd].getRegistred()){_sendError(fd, ERR_NOTREGISTERED, " :You have not registered");return;}
+        _topic(fd, cmdBuffer);
+        return;
+    }
+    else if (command == "INVITE") {
+        if (!this->_clients[fd].getRegistred()){_sendError(fd, ERR_NOTREGISTERED, " :You have not registered");return;}
+        _invite(fd, cmdBuffer);
+        return;
+    }
+    else if (command == "KICK") {
+        if (!this->_clients[fd].getRegistred()){_sendError(fd, ERR_NOTREGISTERED, " :You have not registered");return;}
+        _kick(fd, cmdBuffer);
+        return;
+    }
+    else {
+        //unknown command
+        _sendError(fd, ERR_UNKNOWNCOMMAND, command + " :Unknown command");
+        return;
     }
 }
+
 
 void    Server::_removeClient(int fd) {
     for (std::vector<pollfd>::iterator it = _fds.begin(); it != _fds.end(); ++it) {

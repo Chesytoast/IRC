@@ -34,8 +34,9 @@ void    Client::setHostname(std::string hostname) {
 
 void    Client::setPwdClear() {
     this->_pwdClear = true;
-    if (!this->_nickname.empty() && !this->_username.empty() && this->_pwdClear)
-        this->_registred = true;
+    if (!this->_nickname.empty() && !this->_username.empty() && this->_pwdClear) {
+        setRegistred();
+    }
 }
 
 void    Client::addChannel(std::string channelName) {

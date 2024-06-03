@@ -10,12 +10,11 @@ void    Server::_privmsg(int fd, std::string buffer) {
     std::getline(ss, message);
     //soit le destinataire est une personne ou un salon
     //1 personne: envoie du message au fd avec send
-    const char* cond = "#";
-    if (dest.c_str()[0] != cond[0]) {
+    if (dest.c_str()[0] != '#') {
         //check si le dest existe et recup son fd;
         int fdToSend;
         if ((fdToSend = _getClientFd(dest)) < 0) {
-            //error
+            _sendError(fd, ERR_NOSUCHNICK, dest + " :No such nick");
             return;
         }
         _sendMessage(fdToSend, this->_clients[fd].makePrefix() + " PRIVMSG " + dest + " :" + message);
@@ -24,7 +23,12 @@ void    Server::_privmsg(int fd, std::string buffer) {
     else {
         //check si le dest channel existe;
         if (!_doesChannelExist(dest)) {
-            //error
+            _sendError(fd, ERR_NOSUCHHANNEL, dest + " :No such channel");
+            return;
+        }
+        if (!this->_channels[dest].isMember(fd)) {
+            //std::cout << "here" << std::endl;
+            _sendError(fd, ERR_NOTONCHANNEL, this->_clients[fd].getNickname() + " " + dest + " :You're not on that channel");
             return;
         }
         _sendToChannel(fd, dest, this->_clients[fd].makePrefix() + " PRIVMSG " + dest + " :" + message);
