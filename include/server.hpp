@@ -18,6 +18,7 @@
 #include "client.hpp"
 #include "channel.hpp"
 #include "rply.hpp"
+#include <csignal>
 
 class Server {
     private:
@@ -30,6 +31,7 @@ class Server {
         std::map<std::string, Channel>      _channels;
 
         Server();
+        static void    _stop(int sig);
         void    _setup();
         void    _handleNewClient();
         void    _handleClient(int fd);

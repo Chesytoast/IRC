@@ -22,7 +22,7 @@ void    Server::_nick(int fd, std::string buffer) {
     if (this->_clients[fd].getRegistred()) {
         _sendMessage(fd, oldnick + " NICK " + nickname );
     }
-    else if (this->_clients[fd].getUsername().empty() && this->_clients[fd].getPwdlClear()) {
+    else if (!this->_clients[fd].getUsername().empty() && this->_clients[fd].getPwdlClear()) {
         //send welcome
         this->_clients[fd].setRegistred();
         _sendRply(fd, RPLY_WELCOME, this->_clients[fd].getNickname() + " :Welcome to the Internet Relay Network");

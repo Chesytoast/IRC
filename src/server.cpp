@@ -1,11 +1,22 @@
 #include "../include/server.hpp"
 
+static bool shouldRun = true;
+
+static void stop(int) {
+    shouldRun = false;
+}
+
 Server::~Server() {
     if (this->_sock < 0)
         return;
-    //erase all client;
     close(this->_sock);
+    //erase all client;
+    for (size_t i = 0; i < this->_fds.size(); ++i) {
+        close(this->_fds[i].fd);
+    }
+    this->_fds.clear();
 }
+
 
 Server::Server(int port, std::string pwd): _pwd(pwd), _port(port), _sock(-1) {
     this->_setup();
@@ -49,9 +60,10 @@ void    Server::_setup() {
 
 
 void    Server::run(){
-    while (true) {
-        if (poll(&this->_fds[0], this->_fds.size(), -1) < 0) {
-            throw std::runtime_error("Poll failure.");
+    signal(SIGINT, stop);
+    while (shouldRun) {
+        if (poll(&this->_fds[0], this->_fds.size(), 10) < 0) {
+            throw std::runtime_error("Poll failure or interrupted manually");
         }
         for (size_t i = 0; i < this->_fds.size(); i++) {
             if (this->_fds[i].revents & POLLIN) {

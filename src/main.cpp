@@ -24,7 +24,6 @@ int main(int ac, char **av){
         std::cerr << "Port needs to be at least 1024." << std::endl;
         return (EXIT_FAILURE);
     }
-
     try {
         Server serv(port, pwd);
         serv.run();
