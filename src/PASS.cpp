@@ -15,6 +15,6 @@ void    Server::_pass(int fd, std::string buffer) {
         }
     }
     else {
-       _sendError(fd, ERR_PASSWDMISMATCH, " :Passwor incorrect");
+       _sendError(fd, ERR_PASSWDMISMATCH, " :Password incorrect");
     }
 }

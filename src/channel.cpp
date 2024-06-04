@@ -31,8 +31,9 @@ bool    Channel::isOperator(int fd) {
 void    Channel::addClient(int fd) {
     this->_clients.push_back(fd);
     if (isInvited(fd)) {
-        std::vector<int>::iterator it = std::find(this->_clients.begin(), this->_clients.end(), fd);
-        this->_invitedClients.erase(it);
+        std::vector<int>::iterator it = std::find(this->_invitedClients.begin(), this->_invitedClients.end(), fd);
+        if (it != this->_invitedClients.end())
+            this->_invitedClients.erase(it);
     }
 }
 

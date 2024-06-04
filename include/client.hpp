@@ -8,7 +8,6 @@
 
 class Client {
     private:
-        int         _fd;
         bool        _pwdClear;
         bool        _registred;
         std::string _nickname;
@@ -19,7 +18,6 @@ class Client {
 
     public:
         std::string buffer;
-        Client(int fd);
         Client();
         ~Client();
 

@@ -36,11 +36,11 @@ void    Server::_invite(int fd, std::string buffer) {
     }
     int receiver = _getClientFd(nick);
     if (channel.isMember(receiver)) {
-        _sendError(fd, ERR_USERONCHANNEL, nick + " " + channelName + " :is already on channel");
+        _sendError(fd, ERR_USERONCHANNEL, this->_clients[receiver].makePrefix() + " " + nick + " :is already on channel");
         return;
     }
     //send invite
     _sendRply(fd, RPL_INVITING, this->_clients[fd].getNickname() + " " + channelName + " " + nick);
     _sendMessage(receiver, this->_clients[fd].makePrefix() + " INVITE " + nick + " " + channelName);
-    channel.invite(fd);
+    channel.invite(receiver);
 }

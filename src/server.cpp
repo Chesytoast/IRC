@@ -62,7 +62,7 @@ void    Server::_setup() {
 void    Server::run(){
     signal(SIGINT, stop);
     while (shouldRun) {
-        if (poll(&this->_fds[0], this->_fds.size(), 10) < 0) {
+        if (poll(&this->_fds[0], this->_fds.size(), -1) < 0) {
             throw std::runtime_error("Poll failure or interrupted manually");
         }
         for (size_t i = 0; i < this->_fds.size(); i++) {
@@ -95,9 +95,9 @@ void    Server::_handleNewClient() {
     clientPoll.events = POLLIN;
     this->_fds.push_back(clientPoll);
 
-    this->_clients.insert(std::pair<int, Client>(clientFd, Client(clientFd)));
+    this->_clients.insert(std::pair<int, Client>(clientFd, Client()));
 
-    std::cout << "Client accpeted with fd: " << clientFd << std::endl; 
+    //std::cout << "Client accpeted with fd: " << clientFd << std::endl; 
 }
 
 
@@ -112,29 +112,30 @@ void    Server::_handleClient(int fd) {
         return;
     }
     else if (bytesRead == 0) {
-        std::cout << "Client " << fd << " disconnected." << std::endl;
+        // std::cout << "Client " << fd << " disconnected." << std::endl;
         _clientQuit(fd, "");
         return;
     }
     //test pour voir ce que recoit le server
     buffer[bytesRead] = 0;
-    write(1, "_", 1);
-    write(1, buffer, bytesRead);
+    // write(1, "[", 1);
+    // write(1, buffer, bytesRead);
+    // write(1, "]\n", 2);
 
     //parsing et exec des cmd
     this->_clients[fd].buffer.append(buffer,bytesRead);
     std::string cmdBuffer;
     size_t  pos = 0;
 
-    while ((pos =  this->_clients[fd].buffer.find("\n")) != std::string::npos) {
-        cmdBuffer =  this->_clients[fd].buffer.substr(0, pos);
+    while ((pos = this->_clients[fd].buffer.find("\n")) != std::string::npos) {
+        cmdBuffer = this->_clients[fd].buffer.substr(0, pos - 1);
         _processCommand(fd, cmdBuffer);
-         this->_clients[fd].buffer.erase(0, pos + 1);
+        this->_clients[fd].buffer.erase(0, pos + 1);
     }
 }
 
 void    Server::_processCommand(int fd, std::string cmdBuffer) {
-    std::cout << "Client :" << fd << " cmd: " << cmdBuffer << std::endl;
+    // std::cout << "Client [" << this->_clients[fd].getNickname() << "] cmd: " << cmdBuffer << std::endl;
     
     std::stringstream ss(cmdBuffer);
     std::string command;

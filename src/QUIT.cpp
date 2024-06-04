@@ -23,6 +23,8 @@ void    Server::_clientQuit(int fd, std::string message) {
         _sendToChannel(fd, *it, allMsg);
         this->_channels[*it].delClient(fd);
     }
+    //send to himself
+    _sendMessage(fd, message);
     close(fd);
     _removeClient(fd);
 }

@@ -21,7 +21,7 @@ void    Server::_join(int fd, std::string buffer) {
     Channel& channel = this->_channels[channelName];
     //verif a faire avec les droits
     if (channel.getInviteOnly() && !channel.isInvited(fd)) {
-        _sendError(fd, ERR_INVITEONLYCHAN, ":Cannot join channel (+l)");
+        _sendError(fd, ERR_INVITEONLYCHAN, ":Cannot join channel (+i)");
         return;
     }
     if (!channel.isPwdCorrect(pwd)) {
@@ -62,7 +62,7 @@ std::string    Server::getNameList(std::string channelName) {
             nameList += "@";
         }
         nameList += this->_clients[fd].getNickname() + " ";
-        std::cout << nameList << std::endl;
+        //std::cout << nameList << std::endl;
     }
     return nameList;
 }

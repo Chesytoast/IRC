@@ -1,9 +1,7 @@
 #include "../include/client.hpp"
 
-Client::Client(int fd): _fd(fd), _pwdClear(false), _registred(false) {
 
-}
-Client::Client(): _fd(-1), _pwdClear(false), _registred(false){}
+Client::Client(): _pwdClear(false), _registred(false){}
 
 Client::~Client(){
 

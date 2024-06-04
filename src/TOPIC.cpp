@@ -27,6 +27,7 @@ void    Server::_topic(int fd, std::string buffer) {
                 channel.setTopic(arg);
                 std::string toSend = this->_clients[fd].makePrefix() + " TOPIC " + channelName + " :" + arg;
                 _sendMessage(fd, toSend);
+                // _sendRply(fd, RPL_TOPIC, this->_clients[fd].getNickname() + " " + channelName + " :" + arg );
                 _sendToChannel(fd, channelName, toSend);
             }
             else {
@@ -38,8 +39,13 @@ void    Server::_topic(int fd, std::string buffer) {
         else {
             //modif
             channel.setTopic(arg);
-            std::string toSend = this->_clients[fd].makePrefix() + " TOPIC " + channelName + " :" + arg;
+            std::string toSend = this->_clients[fd].makePrefix() + " TOPIC " + channelName + arg;
+            // if (toSend[0] != ':'){
+            //     toSend = ":" + toSend;
+            // }
+            // std::cout << toSend << "|" <<std::endl;
             _sendMessage(fd, toSend);
+            // _sendRply(fd, RPL_TOPIC, this->_clients[fd].getNickname() + " " + channelName + " :" + arg );
             _sendToChannel(fd, channelName, toSend);
         }
     }
@@ -50,7 +56,7 @@ void    Server::_topic(int fd, std::string buffer) {
         }
         else {
             //topic
-            _sendRply(fd, RPLY_TOPIC, this->_clients[fd].getNickname() + " " + channelName+ " :" + arg);
+            _sendRply(fd, RPLY_TOPIC, this->_clients[fd].getNickname() + " " + channelName+ " :" + channel.getTopic());
         }
     }
 }
