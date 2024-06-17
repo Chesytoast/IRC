@@ -54,8 +54,12 @@ void    Channel::addOperator(int fd) {
 
 void    Channel::delOperator(int fd) {
     std::vector<int>::iterator it = std::find(this->_operators.begin(), this->_operators.end(), fd);
-    if (it != this->_operators.end())
+    if (it != this->_operators.end()){
         this->_operators.erase(it);
+        if (this->_operators.empty() && !this->_clients.empty()){
+            _operators.push_back(_clients[0]);
+        }
+    }
 }
 
 void    Channel::inviteClient(int fd) {

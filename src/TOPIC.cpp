@@ -25,7 +25,7 @@ void    Server::_topic(int fd, std::string buffer) {
             if (channel.isOperator(fd)) {
                 //modif
                 channel.setTopic(arg);
-                std::string toSend = this->_clients[fd].makePrefix() + " TOPIC " + channelName + " :" + arg;
+                std::string toSend = this->_clients[fd].makePrefix() + " TOPIC " + channelName + arg;
                 _sendMessage(fd, toSend);
                 // _sendRply(fd, RPL_TOPIC, this->_clients[fd].getNickname() + " " + channelName + " :" + arg );
                 _sendToChannel(fd, channelName, toSend);

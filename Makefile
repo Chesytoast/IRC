@@ -3,7 +3,7 @@ OBJS_DIR = objs
 DIR_SRC = src/
 SRCS = $(wildcard $(DIR_SRC)*.cpp)
 OBJS = $(patsubst $(DIR_SRC)%.cpp, $(OBJS_DIR)/%.o, $(SRCS))
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 CPPFLAGS = -std=c++98
 
 all: $(OBJS_DIR) $(NAME)

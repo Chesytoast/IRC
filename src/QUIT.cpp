@@ -22,6 +22,9 @@ void    Server::_clientQuit(int fd, std::string message) {
         //send quit message to all channel the client is a part of
         _sendToChannel(fd, *it, allMsg);
         this->_channels[*it].delClient(fd);
+        if (this->_channels[*it].getUsers() == 0){
+            this->_channels.erase(*it);
+        }
     }
     //send to himself
     _sendMessage(fd, message);

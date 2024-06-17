@@ -150,6 +150,9 @@ void    Server::_processCommand(int fd, std::string cmdBuffer) {
     if (command == "CAP") {
         return;
     }
+    if (command == "WHO") {
+        return;
+    }
     else if (command == "PING") {
         _ping(fd, cmdBuffer);
         return;

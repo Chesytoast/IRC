@@ -28,4 +28,8 @@ void    Server::_part(int fd, std::string buffer) {
     _sendMessage(fd, this->_clients[fd].makePrefix() + " PART " + channelName);
     _sendToChannel(fd, channelName, this->_clients[fd].makePrefix() + " PART " + channelName + message);
     channel.delClient(fd);
+    //
+    if (this->_channels[channelName].getUsers() == 0){
+        this->_channels.erase(channelName);
+    }
 }
