@@ -17,7 +17,7 @@ void    Server::_privmsg(int fd, std::string buffer) {
             _sendError(fd, ERR_NOSUCHNICK, dest + " :No such nick");
             return;
         }
-        _sendMessage(fdToSend, this->_clients[fd].makePrefix() + " PRIVMSG " + dest + " :" + message);
+        _sendMessage(fdToSend, this->_clients[fd].makePrefix() + " PRIVMSG " + dest + message);
     }
     //2 envoi du message sur le channel -> boucler sur tout les clients du channel et envoyer le msg
     else {
@@ -31,6 +31,6 @@ void    Server::_privmsg(int fd, std::string buffer) {
             _sendError(fd, ERR_NOTONCHANNEL, this->_clients[fd].getNickname() + " " + dest + " :You're not on that channel");
             return;
         }
-        _sendToChannel(fd, dest, this->_clients[fd].makePrefix() + " PRIVMSG " + dest + " :" + message);
+        _sendToChannel(fd, dest, this->_clients[fd].makePrefix() + " PRIVMSG " + dest + message);
     }
 }

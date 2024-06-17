@@ -30,8 +30,8 @@ void    Server::_kick(int fd, std::string buffer) {
         _sendError(fd, ERR_NOTONCHANNEL, this->_clients[fd].getNickname() + " " + channelName + " :You're not on that channel");
         return;
     }
-    if (channel.isOperator(fd)){
-        _sendRply(fd, RPL_CHANNELMODEIS, this->_clients[fd].getNickname() + " " + channelName + " +o");
+     if (!channel.isOperator(fd)) {
+        _sendError(fd, ERR_CHANOPRIVSNEEDED, channelName + " :You're not channel operator");
         return;
     }
     int dst = _getClientFd(nick);

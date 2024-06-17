@@ -17,7 +17,7 @@ void    Server::_clientQuit(int fd, std::string message) {
     std::vector<std::string>::iterator it;
     //make the quit message format
     Client& client = this->_clients[fd];
-    std::string allMsg = client.makePrefix() + " QUIT :Quit: " + message;
+    std::string allMsg = client.makePrefix() + " QUIT " + message;
     for (it = channels.begin(); it != channels.end(); it++) {
         //send quit message to all channel the client is a part of
         _sendToChannel(fd, *it, allMsg);
